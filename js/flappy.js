@@ -45,3 +45,34 @@ function parDeBarreiras(altura, abertura, posicao) {
     this.definirAbertura()
     this.setPosicao(posicao)
 }
+
+function barreiras(altura, largura, abertura, espaco, notificarPonto) {
+    this.pares = [
+        new parDeBarreiras(altura, abertura, largura),
+        new parDeBarreiras(altura, abertura, largura + espaco),
+        new parDeBarreiras(altura, abertura, largura + espaco * 2),
+        new parDeBarreiras(altura, abertura, largura + espaco * 3)
+    ]
+    
+    const deslocamento = 3
+
+    this.animar = () => {
+        this.pares.forEach(par => {
+            par.setPosicao(par.getPosicao() - deslocamento)
+
+            if(par.getPosicao() < -par.getLargura()) { 
+                par.setPosicao(par.getPosicao() + espaco * this.pares.length)
+
+                par.definirAbertura() 
+            }
+
+            const meio = largura / 2
+            
+            const cruzouOMeio = par.getPosicao() + deslocamento >= meio && par.getPosicao() < meio
+            if(cruzouOMeio) {
+                notificarPonto()
+            }
+
+        })
+    }
+}
