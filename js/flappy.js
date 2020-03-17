@@ -104,3 +104,36 @@ function passaro(alturaJogo) {
     
     this.setAltura(alturaJogo / 2)
 }
+
+function progresso(){
+    this.score = novoElemento("span", "progresso")
+    this.atualizarPontos = pontos => {
+        this.score.innerHTML = pontos
+    }
+
+    this.atualizarPontos(0)
+}
+
+function flappyBird() {
+    let pontos = 0
+
+    const areaDoJogo = document.querySelector("[wm-flappy]")
+    const altura = areaDoJogo.clientHeight
+    const largura = areaDoJogo.clientWidth
+    const score = new progresso()
+    const listaBarreiras = new barreiras(altura, largura, 200, 400, () => score.atualizarPontos(++pontos))
+    const flappyBird = new passaro(altura)
+
+    areaDoJogo.appendChild(score.score)
+    areaDoJogo.appendChild(flappyBird.passaro)
+    listaBarreiras.pares.forEach(par => areaDoJogo.appendChild(par.parDeBarreiras))
+
+    this.start = () => {
+        const temporizador = setInterval(() => {
+            listaBarreiras.animar()
+            flappyBird.animar()
+        }, 20);
+    }
+}
+
+new flappyBird().start()
