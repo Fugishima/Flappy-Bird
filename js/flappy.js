@@ -76,3 +76,31 @@ function barreiras(altura, largura, abertura, espaco, notificarPonto) {
         })
     }
 }
+
+function passaro(alturaJogo) {
+    let voando = false
+
+    this.passaro = novoElemento("img", "passaro")
+    this.passaro.src = "imagens/passaro.png"
+
+    this.getAltura = () => parseInt(this.passaro.style.bottom.split("px")[0])
+    this.setAltura = altura => this.passaro.style.bottom = `${altura}px`
+
+    window.onkeydown = e => voando = true
+    window.onkeyup = e => voando = false 
+
+    this.animar = () => {
+        const novaAltura = this.getAltura() + (voando ? 8 : -5)
+        const alturaMaxima = alturaJogo - this.passaro.clientHeight
+
+        if (novaAltura <= 0) {
+            this.setAltura(0)
+        } else if (novaAltura >= alturaMaxima) {
+            this.setAltura(alturaMaxima)
+        } else {
+            this.setAltura(novaAltura)
+        }
+    }
+    
+    this.setAltura(alturaJogo / 2)
+}
